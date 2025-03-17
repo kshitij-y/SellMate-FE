@@ -6,9 +6,9 @@ interface prop {
 
 const LineText: React.FC<prop> = ({ text }) => {
     return (
-      <div className="flex items-center w-[85%] mx-auto my-[-15px]">
+      <div className="flex items-center w-full mx-auto ">
         <span className="flex-1 border-t"></span>
-        <span className="px-2 text-center flex items-center font-light">{text}</span>
+        <span className="px-4 text-center flex items-center font-light pb-1">{text}</span>
         <span className="flex-1 border-t"></span>
       </div>
     );

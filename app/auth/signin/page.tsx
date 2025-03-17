@@ -1,12 +1,14 @@
 import BuySellAuction from "@/components/BuySellAuction";
-import { Signup } from "@/components/signup";
 import { Logo } from "@/components/Logo";
+import { Signin } from "@/components/signin";
+import { TopBar } from "@/components/TopBar";
+
 export default function Page() {
   return (
     <div className="flex items-center min-h-screen">
       <div className="hidden lg:block w-[30%] bg-black h-screen">
-        <div className="text-white">
-          <Logo />
+        <div className="w-[90%] mx-auto fixed top-0 left-0 right-0 text-white">
+          <TopBar />
         </div>
         <div className="mt-6">
           <img
@@ -16,8 +18,9 @@ export default function Page() {
         </div>
         <BuySellAuction />
       </div>
-      <div className="mx-auto ">
-        <Signup />
+
+      <div className="mx-auto">
+        <Signin />
       </div>
     </div>
   );

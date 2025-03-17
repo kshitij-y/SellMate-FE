@@ -1,9 +1,11 @@
-import { ModeToggle } from "@/components/theme-toggle";
+import { TopBar } from "@/components/TopBar";
 
 export default function Home() {
   return (
     <div>
-      <ModeToggle />
+      <div className="w-full px-6 border-b-1">
+        <TopBar />
+      </div>
     </div>
   );
 }

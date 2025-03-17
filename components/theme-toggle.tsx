@@ -20,7 +20,7 @@ export function ModeToggle() {
   };
 
   return (
-    <Button variant="outline" size="icon" onClick={toggleTheme}>
+    <Button size="icon" onClick={toggleTheme}>
       {/* Render nothing until mounted to prevent hydration errors */}
       {mounted ? (
         theme === "dark" ? (
