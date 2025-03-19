@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Dialog,
   DialogContent,
@@ -9,8 +11,41 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useState } from "react";
+import { toast } from "sonner";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store/store";
+import { ButtonLoading } from "./ui/ButtonLoading";
+import { useAuthMutation } from "@/lib/hooks/useAuthMutation";
+import { useRouter } from "next/navigation";
 
 export function SignupWithEmailDialog() {
+  //loader
+  const isloading = useSelector((state: RootState) => state.auth.loading);
+  const router = useRouter();
+  const { signUpMutation } = useAuthMutation();
+
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleSignUp = async () => {
+    if (password !== confirmPassword) {
+      toast("password did not match");
+      return;
+    } else {
+      signUpMutation.mutate(
+        { email, password, name },
+        {
+          onSuccess: () => {
+            router.push("/dashboard");
+          }
+        }
+      );
+    }
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -38,6 +73,9 @@ export function SignupWithEmailDialog() {
               placeholder="John Doe"
               required
               className="h-12 text-lg"
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
             />
           </div>
 
@@ -49,6 +87,9 @@ export function SignupWithEmailDialog() {
               placeholder="you@example.com"
               required
               className="h-12 text-lg"
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
             />
           </div>
 
@@ -60,6 +101,9 @@ export function SignupWithEmailDialog() {
               placeholder="••••••••"
               required
               className="h-12 text-lg"
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
             />
           </div>
 
@@ -71,10 +115,22 @@ export function SignupWithEmailDialog() {
               placeholder="••••••••"
               required
               className="h-12 text-lg"
+              onChange={(e) => {
+                setConfirmPassword(e.target.value);
+              }}
             />
           </div>
 
-          <Button className="w-full h-12 text-lg">Create account</Button>
+          {!isloading && (
+            <Button className="w-full h-12 text-lg" onClick={handleSignUp}>
+              Create account
+            </Button>
+          )}
+          {isloading && (
+            <div className="w-full h-12 text-lg">
+              <ButtonLoading />
+            </div>
+          )}
         </div>
       </DialogContent>
     </Dialog>

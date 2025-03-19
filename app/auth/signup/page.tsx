@@ -8,7 +8,7 @@ export default function Page() {
         <div className="text-white">
           <Logo />
         </div>
-        <div className="mt-6">
+        <div className="mt-4">
           <img
             src="https://cdn.dribbble.com/uploads/60700/original/bb339e5ba35e549b32d989be548c908d.png?1740610182"
             alt="Framer logo"
