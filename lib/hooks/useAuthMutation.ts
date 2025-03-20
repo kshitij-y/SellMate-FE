@@ -8,10 +8,12 @@ import { signIn, signUp } from "@/lib/auth-client";
 import { useDispatch } from "react-redux";
 import { setLoading, setError, setUser, setToken } from "@/lib/store/Slices/authSlice";
 import { toast } from "sonner";
+import { redirect, useRouter } from "next/navigation";
 
 export const useAuthMutation = () => {
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const signInMutation = useMutation({
     mutationFn: async (Credential: { email: string; password: string }) => {
@@ -83,7 +85,9 @@ export const useAuthMutation = () => {
     },
     onSuccess: (response) => {
       dispatch(setLoading(false));
-      dispatch(setToken(response.data?.token || ""));
+      if ('token' in response.data) {
+        dispatch(setToken(response.data.token || ""));
+      }
       if ("data" in response && response.data) {
         const sanitizedUser = {
           ...response.data.user,
@@ -104,7 +108,54 @@ export const useAuthMutation = () => {
     
   });
 
-  
 
-  return { signInMutation, signUpMutation };
+
+  const googleSignUpMutation = useMutation({
+    mutationFn: async () => {
+      dispatch(setLoading(true));
+
+      const response = await signIn.social({
+        provider: "google",
+        callbackURL: "http://localhost:3001/dashboard",
+      });
+
+      if (response?.error) {
+        const errorMessage = response.error.message || "Google sign-up failed";
+        dispatch(setError(errorMessage));
+        toast.error(errorMessage);
+        throw new Error(errorMessage);
+      }
+
+      console.log(response);
+      return response;
+    },
+    onSuccess: (response) => {
+      dispatch(setLoading(false));
+
+      if ("data" in response && response.data) {
+        if ("token" in response.data) {
+          dispatch(setToken(response.data.token || ""));
+        }
+
+        if ("user" in response.data) {
+          dispatch(setUser(response.data.user));
+        }
+
+        queryClient.invalidateQueries({ queryKey: ["session"] });
+        // toast.error("Signed in with Google successfully!");
+      }
+    },
+    onError: (error) => {
+      const errorMessage = error.message || "An unknown error occurred";
+      dispatch(setLoading(false));
+      dispatch(setError(errorMessage));
+      toast.error(errorMessage);
+    },
+  });
+
+
+
+
+
+  return { signInMutation, signUpMutation, googleSignUpMutation };
 };

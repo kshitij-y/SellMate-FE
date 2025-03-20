@@ -15,7 +15,7 @@ import { useAuthMutation } from "@/lib/hooks/useAuthMutation";
 export const Signin = () => {
   const isloading = useSelector((state: RootState) => state.auth.loading);
   const router = useRouter();
-  const { signInMutation } = useAuthMutation();
+  const { signInMutation, googleSignUpMutation } = useAuthMutation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,11 +32,19 @@ export const Signin = () => {
 
   }
 
+  const handleGoogleSign = () => {
+    googleSignUpMutation.mutate();
+  }
+
 
   return (
     <div className="flex flex-col w-[450px]">
       <div className="font-bold text-2xl my-2 p-2">Sign in to SellMate</div>
-      <Button className="my-4 h-12 p-6" variant={"outline"}>
+      <Button
+        className="my-4 h-12 p-6"
+        variant={"outline"}
+        onClick={handleGoogleSign}
+      >
         Sign up with Google
       </Button>
 

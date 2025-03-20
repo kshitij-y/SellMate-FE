@@ -1,22 +1,39 @@
-import { SignupWithEmailDialog } from "./Emaildailog";
-import { Button } from "./ui/button";
+"use client"
+import { Button } from "@/components/ui/button";
 import LineText from "@/components/lineText";
+import { toast } from "sonner";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store/store";
+import { useAuthMutation } from "@/lib/hooks/useAuthMutation";
+import { SignupWithEmailDialog } from "./Emaildailog";
+import { ButtonLoading } from "./ui/ButtonLoading";
 
 export const Signup = () => {
+  const isloading = useSelector((state: RootState) => state.auth.loading);
+  const { googleSignUpMutation } = useAuthMutation();
+  
+  const handleGoogleSign = () => {
+    googleSignUpMutation.mutate();
+  };
   return (
     <div className="flex flex-col w-[450px]">
-          <div className="font-bold text-2xl my-2 p-2">
-              Sign up to SellMate
-          </div>
-          <Button className="my-4 h-12 p-6">
-              Sign up with Google
-          </Button>
+      <div className="font-bold text-2xl my-2 p-2">Sign up to SellMate</div>
+      {!isloading && (
+        <Button className="my-4 h-12 p-6" onClick={handleGoogleSign}>
+          Sign up with Google
+        </Button>
+      )}
+      {isloading && (
+        <div className="w-full h-12 text-lg my-6">
+          <ButtonLoading />
+        </div>
+      )}
 
-          <LineText text="or" />
+      <LineText text="or" />
 
-          <SignupWithEmailDialog />
-          
-          <div className="text-center text-sm text-gray-500 space-y-2 mt-4">
+      <SignupWithEmailDialog />
+
+      <div className="text-center text-sm text-gray-500 space-y-2 mt-4">
         <p>
           By creating an account you agree with our{" "}
           <a href="/terms" className="underline hover:text-gray-700">
