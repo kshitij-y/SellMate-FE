@@ -39,7 +39,7 @@ export function SignupWithEmailDialog() {
         { email, password, name },
         {
           onSuccess: () => {
-            router.push("/dashboard");
+            router.push("/verify");
           }
         }
       );

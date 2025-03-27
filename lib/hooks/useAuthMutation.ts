@@ -8,12 +8,10 @@ import { signIn, signUp } from "@/lib/auth-client";
 import { useDispatch } from "react-redux";
 import { setLoading, setError, setUser, setToken } from "@/lib/store/Slices/authSlice";
 import { toast } from "sonner";
-import { redirect, useRouter } from "next/navigation";
 
 export const useAuthMutation = () => {
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
-  const router = useRouter();
 
   const signInMutation = useMutation({
     mutationFn: async (Credential: { email: string; password: string }) => {

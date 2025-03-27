@@ -45,7 +45,7 @@ export const Signin = () => {
         variant={"outline"}
         onClick={handleGoogleSign}
       >
-        Sign up with Google
+        Sign in with Google
       </Button>
 
       <LineText text="or sign in with email" />
