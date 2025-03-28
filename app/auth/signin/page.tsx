@@ -8,7 +8,7 @@ export default function Page() {
     <div className="flex items-center min-h-screen">
       <div className="hidden lg:block w-[30%] bg-black h-screen">
         <div className="w-[90%] mx-auto fixed top-0 left-0 right-0 text-white">
-          <TopBar />
+          <TopBar auth={false} />
         </div>
         <div className="mt-6">
           <img

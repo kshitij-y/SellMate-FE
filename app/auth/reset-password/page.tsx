@@ -7,7 +7,7 @@ export default function Page() {
   return (
     <div className="flex items-center min-h-screen">
       <div className="w-full px-6 mx-auto fixed top-0 left-0 right-0 border-b-1">
-        <TopBar />
+        <TopBar auth={ false } />
       </div>
       <div className="flex justify-center w-full">
         <div className="space-y-4 w-[450px]">
