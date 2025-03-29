@@ -57,7 +57,7 @@ export const useAddProduct = () => {
   return useMutation({
     mutationFn: async (product: unknown) => {
       const response = await fetcher<ApiResponse<Product>>(
-        `/api/user/addProduct`,
+        `/api/user/products/addProduct`,
         {
           method: "POST",
           body: JSON.stringify({product}),
@@ -85,7 +85,7 @@ export const useShowMyProduct = () => {
   return useMutation({
     mutationFn: async () => {
       const response = await fetcher<ApiResponse<Product>>(
-        `/api/user/showMyProducts`,
+        `/api/user/products/showMyProducts`,
         {
           credentials: "include",
         }
@@ -111,7 +111,7 @@ export const useDeleteProduct = () => {
   return useMutation({
     mutationFn: async (id: string) => {
       const response = await fetcher<ApiResponse<Product>>(
-        `/api/user/deleteProduct`,
+        `/api/user/products/deleteProduct`,
         {
           method: "delete",
           credentials: "include",
@@ -140,7 +140,7 @@ export const useUpdateProduct = () => {
   return useMutation({
     mutationFn: async ({ id, updateData }: UpdateProductPayload) => {
       const response = await fetcher<ApiResponse<Product>>(
-        `/api/user/updateProduct`,
+        `/api/user/products/updateProduct`,
         {
           method: "PATCH",
           credentials: "include",

@@ -32,7 +32,7 @@ export function SignupWithEmailDialog() {
 
   const handleSignUp = async () => {
     if (password !== confirmPassword) {
-      toast("password did not match");
+      toast.error("password did not match");
       return;
     } else {
       signUpMutation.mutate(

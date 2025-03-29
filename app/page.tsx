@@ -1,15 +1,36 @@
-import { TopBar } from "@/components/TopBar";
-import Loader from "@/components/ui/Loader";
-export default function Home() {
-  // return <Loader />
-  return (
-    <div className="flex flex-col min-h-full h-screen ">
-      <div className="w-full px-6 border-b-1 mx-auto md:px-[5%]">
-        <TopBar auth={true} />
-      </div>
+"use client";
 
-      <div className="min-h-[50vh] mx-auto my-8 p-6 border rounded-lg shadow-lg  md:my-12 md:mx-16">
-      </div>
+import { useEffect } from "react";
+import { TopBar } from "@/components/TopBar";
+import { AppSidebar } from "@/components/SideBar"; // Import the Sidebar
+import { toast } from "sonner";
+import NavBar from "@/components/NavBar";
+
+export default function Home() {
+  useEffect(() => {
+    toast("Welcome to SellMate! 🚀");
+  }, []);
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      {/* Sidebar */}
+      <NavBar />
+
+      {/* main */}
+      <main>
+        <div>
+          topSelling
+        </div>
+        <div>
+          best Rated
+        </div>
+        <div>
+          Live Auction
+        </div>
+        <div>
+          Upcoming Auction
+        </div>
+      </main>
     </div>
   );
 }
