@@ -9,6 +9,8 @@ import { useDispatch } from "react-redux";
 import { setLoading, setError, setUser, setToken } from "@/lib/store/Slices/authSlice";
 import { toast } from "sonner";
 
+const FE_URL = process.env.NEXT_PUBLIC_FE_URL || "http://localhost:3001";
+
 export const useAuthMutation = () => {
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
@@ -114,7 +116,7 @@ export const useAuthMutation = () => {
 
       const response = await signIn.social({
         provider: "google",
-        callbackURL: "http://localhost:3001/dashboard",
+        callbackURL: `${FE_URL}/dashboard`,
       });
 
       if (response?.error) {

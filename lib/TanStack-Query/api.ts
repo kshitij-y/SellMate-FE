@@ -1,4 +1,6 @@
-export const API_URL = "http://localhost:3000";
+const BE_URL = process.env.BE_URL;
+
+export const API_URL = BE_URL || "http://localhost:3000";
 
 export const fetcher = async <T = unknown>(
   endpoint: string,
