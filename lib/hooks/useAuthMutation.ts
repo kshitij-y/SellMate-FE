@@ -108,8 +108,6 @@ export const useAuthMutation = () => {
     
   });
 
-
-
   const googleSignUpMutation = useMutation({
     mutationFn: async () => {
       dispatch(setLoading(true));
@@ -138,11 +136,21 @@ export const useAuthMutation = () => {
         }
 
         if ("user" in response.data) {
-          dispatch(setUser(response.data.user));
+          const user = response.data.user;
+          dispatch(
+            setUser({
+              id: user.id,
+              email: user.email,
+              name: user.name,
+              image: user.image || null,
+              emailVerified: user.emailVerified,
+              createdAt: new Date(user.createdAt),
+              updatedAt: new Date(user.updatedAt),
+            })
+          );
         }
 
         queryClient.invalidateQueries({ queryKey: ["session"] });
-        // toast.error("Signed in with Google successfully!");
       }
     },
     onError: (error) => {

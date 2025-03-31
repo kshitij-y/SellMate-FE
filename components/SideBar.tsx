@@ -8,9 +8,8 @@ import {
   SheetDescription,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { LogOut, Menu, ChevronDown, ChevronUp } from "lucide-react";
+import {  Menu, ChevronDown, ChevronUp } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import Link from "next/link";
@@ -24,6 +23,8 @@ import {
   Car,
   Briefcase,
 } from "lucide-react";
+import LogoutButton from "./logout";
+import ProfileBox from "./ProfileBox";
 
 const categories = [
   {
@@ -122,10 +123,7 @@ export function AppSidebar() {
         </div>
       </SheetTrigger>
 
-      <SheetContent
-        side="left"
-        className="w-80  text-sidebar-foreground "
-      >
+      <SheetContent side="left" className="w-80 text-sidebar-foreground">
         {/* Sidebar Header */}
         <SheetHeader>
           <SheetTitle className="text-xl font-bold">Categories</SheetTitle>
@@ -135,7 +133,7 @@ export function AppSidebar() {
         </SheetHeader>
 
         {/* Scrollable Categories */}
-        <div className="mt-5 h-[calc(100vh-220px)] overflow-y-auto">
+        <div className="mt-5 h-[calc(100vh-260px)] overflow-y-auto">
           {categories.map((cat, index) => (
             <div key={index}>
               {/* Category Item */}
@@ -180,24 +178,15 @@ export function AppSidebar() {
         </div>
 
         {/* Profile Section */}
-        <div className="p-4 border-t bg-sidebar-background flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Avatar className="w-10 h-10">
-              <AvatarImage src={user.avatar} alt={user.name} />
-              <AvatarFallback>{user.name[0]}</AvatarFallback>
-            </Avatar>
-            <div>
-              <p className="text-md font-semibold">{user.name}</p>
-              <p className="text-sm text-muted-foreground">View Profile</p>
-            </div>
+        <div className="p-4 border-t bg-sidebar-background flex items-center">
+          <div className="flex flex-col items-center">
+            <ProfileBox showEmail={ false } />
           </div>
         </div>
 
         {/* Footer */}
         <div className="p-4 border-t bg-sidebar-background">
-          <Button variant="outline" className="w-full">
-            <LogOut size={18} className="mr-2" /> Logout
-          </Button>
+          <LogoutButton />
         </div>
       </SheetContent>
     </Sheet>

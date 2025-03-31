@@ -10,8 +10,8 @@ export const fetcher = async <T = unknown>(
     const res = await fetch(`${API_URL}${endpoint}`, options);
     const response: T = await res.json(); // Properly casting the response
 
-    if (!res.ok || (response as any).success === false) {
-      throw new Error((response as any).message || "Something went wrong");
+    if (!res.ok || (response as any)?.success === false) {
+      throw new Error((response as any)?.message || "Something went wrong");
     }
     console.log(response);
     return response;
