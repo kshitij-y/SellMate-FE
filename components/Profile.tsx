@@ -4,16 +4,17 @@ import { RootState } from "@/lib/store/store";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { formatDistanceToNow } from "date-fns";
+const { formatDistanceToNow } = require("date-fns");
 import ProfileEditor from "./ProfileEditor";
 import AddressEditor from "./AddressEditor";
 import Loader from "./ui/Loader";
+import { Button } from "./ui/button";
+import ChangePassword from "./ChangePassword";
+import { useProfile } from "@/lib/hooks/useProfile";
 
 export default function ProfilePage() {
-  const { user, loading } = useSelector((state: RootState) => state.auth);
   const { address } = useSelector((state: RootState) => state.address);
-
-  if (loading) return <Loader />;
+  const { user, loading } = useProfile();
 
   const name = user?.name || "User";
   const email = user?.email || "No Email";
@@ -30,25 +31,34 @@ export default function ProfilePage() {
     ? `${address.address}, ${address.city}, ${address.state}, ${address.country}, ${address.postal_code}`
     : "No Address Provided";
 
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
-    <div className="flex min-h-screen p-8">
+    <div className="flex min-h-screen p-8 w-full">
       <main className="flex-1">
         <Card className="w-full shadow-lg rounded-lg">
-          <CardHeader className="flex justify-between items-center">
+          <CardHeader className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
             <div>
               <CardTitle className="text-2xl font-bold">Profile</CardTitle>
               <p className="text-sm text-gray-500">
                 Manage your profile information
               </p>
             </div>
-            <div className="flex gap-4">
-              <ProfileEditor />
-              <AddressEditor />
+            <div className="flex flex-wrap justify-start md:justify-end gap-4 w-full md:w-auto">
+              <div className="min-w-[100px]">
+                <ProfileEditor />
+              </div>
+              <div className="min-w-[100px]">
+                <AddressEditor />
+              </div>
             </div>
           </CardHeader>
+
           <Separator />
           <CardContent className="p-6">
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="flex flex-col gap-6">
               <div className="flex items-center gap-6">
                 <Avatar className="w-24 h-24">
                   <AvatarImage src={image} alt={name} />
@@ -59,6 +69,7 @@ export default function ProfilePage() {
                   <p className="text-gray-500">{email}</p>
                 </div>
               </div>
+
               <div className="flex flex-col gap-4">
                 <p className="text-sm text-gray-500">
                   Phone: <span className="font-medium">{phone}</span>
@@ -72,6 +83,13 @@ export default function ProfilePage() {
                 <p className="text-sm text-gray-500">
                   Last Updated: <span className="font-medium">{updated}</span>
                 </p>
+              </div>
+
+              <div className="flex justify-end gap-4 mt-4">
+                <ChangePassword />
+                <Button variant={"outline"} className="px-6">
+                  Forget Password
+                </Button>
               </div>
             </div>
           </CardContent>

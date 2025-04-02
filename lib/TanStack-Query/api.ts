@@ -1,3 +1,5 @@
+import { toast } from "sonner";
+
 const BE_URL = process.env.BE_URL;
 
 export const API_URL = BE_URL || "http://localhost:3000";
@@ -16,8 +18,8 @@ export const fetcher = async <T = unknown>(
     console.log(response);
     return response;
   } catch (error: any) {
-    console.error("API Error:", error.message);
-
-    throw new Error(error.message || "An unknown error occurred");
+    console.log("API Error:", error.message);
+    toast.error("API Error:", error.message);
+    throw error;
   }
 };

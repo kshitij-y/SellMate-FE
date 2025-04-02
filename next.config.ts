@@ -7,6 +7,12 @@ const nextConfig = {
       "lh3.googleusercontent.com", // ✅ Google profile images
       "ui-avatars.com", // ✅ Avatar fallback
     ],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**", // ✅ Allow all image domains
+      },
+    ],
   },
 };
 

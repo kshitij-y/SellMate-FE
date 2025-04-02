@@ -13,24 +13,23 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import useUpdateAddress from "@/lib/hooks/useUpdateAddress";
-import useAddAddress from "@/lib/hooks/useAddAddress";
-import useGetAddress from "@/lib/hooks/useGetAddress";
+import useAddress from "@/lib/hooks/useAddress";
+import { useProfile } from "@/lib/hooks/useProfile";
+import Loader from "./ui/Loader";
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 export default function AddressEditor() {
-  useGetAddress();
-  const { address } = useSelector((state: RootState) => state.address);
-  const { user } = useSelector((state: RootState) => state.auth);
-  const { updateAddress } = useUpdateAddress();
-  const { addAddress } = useAddAddress();
-
+  const { user } = useProfile();
+  const { address, loading, error, fetchAddress, addAddress, updateAddress } = useAddress();
+  const [open, setOpen] = useState(false);
   const [addressForm, setAddressForm] = useState({
-    country: "",
-    state: "",
-    city: "",
-    postal_code: "",
-    phone: "",
-    address: "",
+    country: address?.country || "",
+    state: address?.state || "",
+    city: address?.city || "",
+    postal_code: address?.postal_code || "",
+    phone: address?.phone || "",
+    address: address?.address || "",
   });
 
   useEffect(() => {
@@ -47,29 +46,33 @@ export default function AddressEditor() {
     setAddressForm((prev) => ({ ...prev, [id]: value }));
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!user?.id) {
       console.error("User ID not found");
       return;
     }
 
-    const payload = {
-      ...addressForm,
-      user_id: user.id,
-    };
-
-    if (address) {
-      updateAddress(payload); 
-    } else {
-      addAddress(payload);
+    try {
+      if (address) {
+        await updateAddress(addressForm);
+      } else {
+        await addAddress(addressForm);
+      }
+      setOpen(false);
+    } catch (error) {
+      console.error("Failed to save address:", error);
     }
   };
 
+  if (error) {
+    toast.error(error);
+  }
+
   return (
-    <div className="p-6">
-      <Dialog>
+    <div className="">
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline">
+          <Button variant="default" onClick={() => setOpen(true)}>
             {address ? "Edit Address" : "Add Address"}
           </Button>
         </DialogTrigger>
@@ -104,8 +107,17 @@ export default function AddressEditor() {
           </div>
 
           <DialogFooter>
-            <Button onClick={handleSave}>
-              {address ? "Update Address" : "Add Address"}
+            <Button onClick={handleSave} disabled={loading}>
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Saving...
+                </>
+              ) : address ? (
+                "Update Address"
+              ) : (
+                "Add Address"
+              )}
             </Button>
           </DialogFooter>
         </DialogContent>

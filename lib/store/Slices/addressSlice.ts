@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
 import Address from "@/lib/types/address";
+
 interface AddressState {
   address: Address | null;
   loading: boolean;
@@ -17,7 +17,7 @@ const addressSlice = createSlice({
   name: "address",
   initialState,
   reducers: {
-    setAddress: (state, action: PayloadAction<Address>) => {
+    setAddress: (state, action: PayloadAction<Address | null>) => {
       state.address = action.payload;
       state.loading = false;
       state.error = null;
@@ -31,11 +31,11 @@ const addressSlice = createSlice({
     },
     clearAddress: (state) => {
       state.address = null;
-      state.loading = false;
       state.error = null;
     },
   },
 });
 
-export const { setAddress, setLoading, setError, clearAddress } = addressSlice.actions;
+export const { setAddress, setLoading, setError, clearAddress } =
+  addressSlice.actions;
 export default addressSlice.reducer;

@@ -1,27 +1,26 @@
 "use client";
-import { useSelector } from "react-redux";
-import { RootState } from "@/lib/store/store";
+
 import Image from "next/image";
-import useUserProfile from "@/lib/hooks/useUserProfile";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useProfile } from "@/lib/hooks/useProfile";
 
 interface ProfileBoxProps {
   showEmail?: boolean;
 }
 
 export default function ProfileBox({showEmail = true}: ProfileBoxProps) {
-  useUserProfile();
-
-  const { user, loading } = useSelector((state: RootState) => state.auth);
-
-  const name = user?.name || "Guest User";
-  const email = user?.email || "guest@email.com";
+  const {
+    user,
+    loading,
+  } = useProfile();
+  const name = user?.name;
+  const email = user?.email;
 
   const avatarUrl =
     user?.image ||
     `https://ui-avatars.com/api/?name=${encodeURIComponent(
-      name
+      name || "Unknown"
     )}&background=random`;
 
   if (loading) {
@@ -43,7 +42,7 @@ export default function ProfileBox({showEmail = true}: ProfileBoxProps) {
       />
       <div>
         <h2 className="text-lg font-semibold">{name}</h2>
-        {showEmail && <p className="text-sm text-gray-500">{email}</p>}
+        {showEmail && <p className="text-sm text-gray-500 w-auto">{email}</p>}
         {!showEmail && (
           <Link href="/profile" passHref>
             <p className="text-sm text-blue-500 hover:underline cursor-pointer">
