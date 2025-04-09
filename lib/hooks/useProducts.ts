@@ -3,6 +3,8 @@ import { fetcher } from "../TanStack-Query/api";
 
 import Product from "@/lib/types/product";
 import ApiResponse from "@/lib/types/apiResponse";
+import { toast } from "sonner";
+import topSelling from "../types/topSelling";
 
 interface Data<Product> {
   result: Product[];
@@ -162,3 +164,23 @@ export const useUpdateProduct = () => {
     },
   });
 };
+
+
+export const useTopSelling = () => {
+  return useQuery({
+    queryKey: ["topselling"],
+    queryFn: async () => {
+      const response = await fetcher<ApiResponse<topSelling[]>>(
+        `/api/product/getTopSelling`
+      );
+
+      if (response.success) {
+        return response;
+      } else {
+        toast.error(response.error);
+      }
+    },
+    staleTime: 5 * 60 * 1000,
+    placeholderData: (prevData) => prevData || undefined,
+  })
+}

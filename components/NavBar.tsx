@@ -1,3 +1,4 @@
+import useAddress from "@/lib/hooks/useAddress";
 import { Logo } from "./Logo";
 import { AppSidebar } from "./SideBar";
 import { ModeToggle } from "./theme-toggle";
@@ -6,7 +7,8 @@ import { Input } from "./ui/input";
 import { MapPin } from "lucide-react";
 
 export default function NavBar() {
-  const location = "Delhi";
+  const { address } = useAddress();
+  const location = address?.city;
 
   return (
     <div className="flex items-center justify-between w-full px-3 py-2 bg-background shadow-sm border-b-1">
