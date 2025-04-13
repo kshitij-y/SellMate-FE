@@ -1,3 +1,4 @@
+"use client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetcher } from "../TanStack-Query/api";
 
@@ -35,7 +36,11 @@ export const useAllProducts = (page: number, limit: number) => {
   });
 };
 
-export const useKeyWordSearch = (keyword: string, page: number, limit: number) => {
+export const useKeyWordSearch = (
+  keyword: string,
+  page: number,
+  limit: number
+) => {
   return useQuery({
     queryKey: ["searchProducts", keyword, page, limit],
     queryFn: async () => {
@@ -62,7 +67,7 @@ export const useAddProduct = () => {
         `/api/user/products/addProduct`,
         {
           method: "POST",
-          body: JSON.stringify({product}),
+          body: JSON.stringify({ product }),
           credentials: "include",
         }
       );
@@ -80,7 +85,7 @@ export const useAddProduct = () => {
       console.error("Error adding product:", error);
     },
   });
-}
+};
 
 export const useShowMyProduct = () => {
   const queryClient = useQueryClient();
@@ -134,7 +139,7 @@ export const useDeleteProduct = () => {
       console.error("Error deleting product:", error);
     },
   });
-}
+};
 
 export const useUpdateProduct = () => {
   const queryClient = useQueryClient();
@@ -165,7 +170,6 @@ export const useUpdateProduct = () => {
   });
 };
 
-
 export const useTopSelling = () => {
   return useQuery({
     queryKey: ["topselling"],
@@ -182,5 +186,5 @@ export const useTopSelling = () => {
     },
     staleTime: 5 * 60 * 1000,
     placeholderData: (prevData) => prevData || undefined,
-  })
-}
+  });
+};

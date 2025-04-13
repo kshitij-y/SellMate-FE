@@ -1,4 +1,3 @@
-"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -6,7 +5,6 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ShoppingCart, Gavel, Clock, Check } from "lucide-react";
-import { useAddToCart } from "@/lib/hooks/useAddToCart";
 
 interface ProductBoxProps {
   product: {
@@ -30,10 +28,6 @@ interface ProductBoxProps {
 
 export default function ProductBox({ product }: ProductBoxProps) {
 
-  const addToCartMutation = useAddToCart();
-  const handleAddToCart = () => {
-    addToCartMutation.mutate({ product_id: id, quantity: 1 }); 
-  };
   const {
     id,
     title,
@@ -140,9 +134,7 @@ export default function ProductBox({ product }: ProductBoxProps) {
         <Button asChild>
           <Link href={`/product/${id}`}>View Details</Link>
         </Button>
-        <Button variant="outline" className="flex items-center gap-1" onClick={() => {
-          handleAddToCart()
-        }}>
+        <Button variant="outline" className="flex items-center gap-1">
           <ShoppingCart size={16} />
           Add to Cart
         </Button>

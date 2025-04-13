@@ -38,7 +38,7 @@ export default function Home() {
         </div>
 
         <div className="mt-6">
-          <h2 className="text-xl font-bold">Live Auction</h2>
+          <h2 className="text-xl font-bold">Live Auctions</h2>
           <div className="w-full relative">
             <Slider items={topSelling} />
           </div>

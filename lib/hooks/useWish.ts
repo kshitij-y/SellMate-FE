@@ -1,3 +1,4 @@
+"use client";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { useEffect, useCallback } from "react";
@@ -74,12 +75,50 @@ export const useWish = () => {
       );
 
       if (result.success) {
-         if (result.data) {
-           await reloadWishlist();
-           await removeItem(product.product_id);
-         } else {
-           throw new Error("Invalid data received.");
-         }
+        if (result.data) {
+          await reloadWishlist();
+        } else {
+          throw new Error("Invalid data received.");
+        }
+        toast.success("Product added to wishlist!");
+      } else {
+        throw new Error(result.message || "Failed to add product.");
+      }
+    } catch (error) {
+      dispatch(
+        setError(error instanceof Error ? error.message : String(error))
+      );
+      toast.error(error instanceof Error ? error.message : String(error));
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+  const moveToWishList = async (product: {
+    product_id: string;
+    title: string;
+    price: number;
+    image: string;
+  }) => {
+    dispatch(setLoading(true));
+    try {
+      const result = await fetcher<ApiResponse<wishItem>>(
+        `/api/user/wishlist/addwishlist`,
+        {
+          method: "POST",
+          body: JSON.stringify(product),
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      if (result.success) {
+        if (result.data) {
+          await reloadWishlist();
+          await removeItem(product.product_id);
+        } else {
+          throw new Error("Invalid data received.");
+        }
         toast.success("Product added to wishlist!");
       } else {
         throw new Error(result.message || "Failed to add product.");
@@ -123,15 +162,15 @@ export const useWish = () => {
     } finally {
       dispatch(setLoading(false));
     }
-    };
+  };
 
-    return {
-      wishItems,
-      addToWishList,
-      removeFromWish,
-      reloadWishlist,
-      loading,
-      error,
-    };
-    
+  return {
+    wishItems,
+    addToWishList,
+    removeFromWish,
+    reloadWishlist,
+    moveToWishList,
+    loading,
+    error,
+  };
 };

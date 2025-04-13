@@ -1,3 +1,4 @@
+"use client"
 import useAddress from "@/lib/hooks/useAddress";
 import { Logo } from "./Logo";
 import { AppSidebar } from "./SideBar";
