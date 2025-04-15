@@ -4,8 +4,9 @@ import { fetcher } from "@/lib/TanStack-Query/api";
 import ApiResponse from "@/lib/types/apiResponse";
 import Address from "@/lib/types/address";
 import { setAddress, setError } from "@/lib/store/Slices/addressSlice";
-import { RootState } from "../store/store";
+
 import { toast } from "sonner";
+import { RootState } from "@/lib/store/store";
 
 const useAddress = () => {
   const dispatch = useDispatch();
