@@ -13,29 +13,34 @@ import {
 } from "@/components/ui/dialog";
 import useAddress from "@/lib/hooks/useAddress";
 import { useProfile } from "@/lib/hooks/useProfile";
-import Loader from "./ui/Loader";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
 export default function AddressEditor() {
   const { user } = useProfile();
-  const { address, loading, error, fetchAddress, addAddress, updateAddress } = useAddress();
+  const { address, loading, error, fetchAddress, addAddress, updateAddress } =
+    useAddress();
   const [open, setOpen] = useState(false);
+
   const [addressForm, setAddressForm] = useState({
-    country: address?.country || "",
-    state: address?.state || "",
+    address_line1: address?.address_line1 || "",
+    address_line2: address?.address_line2 || "",
     city: address?.city || "",
-    postal_code: address?.postal_code || "",
     phone: address?.phone || "",
-    address: address?.address || "",
+    pin_code: address?.pin_code || "",
+    country: address?.country || "",
   });
 
   useEffect(() => {
     if (address) {
-      setAddressForm((prev) => ({
-        ...prev,
-        ...address,
-      }));
+      setAddressForm({
+        address_line1: address.address_line1 || "",
+        address_line2: address.address_line2 || "",
+        city: address.city || "",
+        phone: address.phone || "",
+        pin_code: address.pin_code || "",
+        country: address.country || "",
+      });
     }
   }, [address]);
 
@@ -46,31 +51,30 @@ export default function AddressEditor() {
 
   const handleSave = async () => {
     if (!user?.id) {
-      console.error("User ID not found");
+      toast.error("User ID not found");
       return;
     }
 
     try {
-      if (address) {
-        await updateAddress(addressForm);
+      if (address?.id) {
+        await updateAddress({ ...addressForm, address_id: address.id });
       } else {
         await addAddress(addressForm);
       }
       setOpen(false);
-    } catch (error) {
-      console.error("Failed to save address:", error);
+    } catch (err) {
+      console.error("Error saving address:", err);
+      toast.error("Failed to save address");
     }
   };
 
-  if (error) {
-    toast.error(error);
-  }
+  if (error) toast.error(error);
 
   return (
-    <div className="">
+    <div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button variant="default" onClick={() => setOpen(true)}>
+          <Button onClick={() => setOpen(true)}>
             {address ? "Edit Address" : "Add Address"}
           </Button>
         </DialogTrigger>
@@ -84,12 +88,12 @@ export default function AddressEditor() {
 
           <div className="grid gap-4">
             {[
-              "country",
-              "state",
+              "address_line1",
+              "address_line2",
               "city",
-              "postal_code",
               "phone",
-              "address",
+              "pin_code",
+              "country",
             ].map((field) => (
               <div key={field}>
                 <Label htmlFor={field}>
